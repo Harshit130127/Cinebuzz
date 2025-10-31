@@ -2,12 +2,26 @@ from django.db import models
 
 # Create your models here.
 
-
-class Movie(models.Model):  # models.Model is used to create a model in django,it is a base class for all models in django
-    name=models.CharField(max_length=100)
-    description=models.CharField(max_length=300)
-    active=models.BooleanField(default=True)
+class StreamPlatform(models.Model): # it specifies the streaming platform like netflix,amazon prime etc
+    name=models.CharField(max_length=30)
+    about=models.CharField(max_length=150)
+    website=models.URLField(max_length=100)
     
+    def __str__(self):
+        return self.name
+
+
+
+
+
+class WatchList(models.Model):  # models.Model is used to create a model in django,it is a base class for all models in django
+    
+    
+    
+    title=models.CharField(max_length=100)
+    storyline=models.CharField(max_length=300)
+    active=models.BooleanField(default=True)
+    created=models.DateTimeField(auto_now_add=True)
     
     def __str__(self): # the reason of using it because without it, django will show object1,object2 instead of movie names in admin panel
-        return self.name
+        return self.title
