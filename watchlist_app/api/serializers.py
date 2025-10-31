@@ -6,11 +6,23 @@ class MovieSerializer(serializers.ModelSerializer):
     ''' Serializer for Movie model and is used to convert complex data such as querysets and 
     model instances to native Python and the fields must be same as in the model'''
     
+    len_name=serializers.SerializerMethodField() # custom field to get length of name,this field is not present in the database model
+    
+    
     class Meta:
         model = Movie
         fields = "__all__"  # to include all fields of the model
         
         # exclude = ['id']  # to exclude specific fields like id
+        
+        
+        
+        
+    
+    def get_len_name(self, object): # this object is the instance of the model
+        length= len(object.name)
+        return length
+        
         
     def validate(self, data):  # object-level validation
         if data['name'] == data['description']:
