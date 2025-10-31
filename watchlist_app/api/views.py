@@ -96,3 +96,9 @@ class StreamPlatformDetailAV(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
+            
+    def delete(self, request, pk):
+        stream=StreamPlatform.objects.get(pk=pk)
+        stream.delete()
+        
+        return Response(status=status.HTTP_204_NO_CONTENT)
