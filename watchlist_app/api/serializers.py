@@ -17,3 +17,13 @@ class MovieSerializer(serializers.Serializer):
         pass it as keyword arguments to create a new Movie instance.'''
         
         return Movie.objects.create(**validated_data)  # this ** here is used to unpack the dictionary
+    
+    
+    def update(self, instance, validated_data):
+        
+        instance.name = validated_data.get('name', instance.name) # instance here is the previous object
+        instance.description = validated_data.get('description', instance.description)
+        instance.active = validated_data.get('active', instance.active)
+        instance.save()
+        
+        return instance
