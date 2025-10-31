@@ -13,5 +13,7 @@ class MovieSerializer(serializers.Serializer):
     
     
     def create(self, validated_data):
-        ''' Create and return a new `Movie` instance, given the validated data.'''
-        return Movie.objects.create(**validated_data)
+        '''this will unpack the validated_data dictionary and
+        pass it as keyword arguments to create a new Movie instance.'''
+        
+        return Movie.objects.create(**validated_data)  # this ** here is used to unpack the dictionary
