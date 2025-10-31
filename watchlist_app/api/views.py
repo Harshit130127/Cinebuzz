@@ -22,7 +22,7 @@ class WatchListAV(APIView):
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         
         
-class WatchDetailAV(APIView):
+class WatchListDetailAV(APIView):
     
     def get(self, request, pk):
         try:
