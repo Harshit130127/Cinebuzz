@@ -16,7 +16,7 @@ class StreamPlatform(models.Model): # it specifies the streaming platform like n
 
 class WatchList(models.Model):  # models.Model is used to create a model in django,it is a base class for all models in django
     
-    Platform=models.ForeignKey(StreamPlatform, on_delete=models.CASCADE, related_name='watchlist') # ForeignKey is used to create a many-to-one relationship, here one stream platform can have multiple watchlist items
+    Platform=models.ForeignKey(StreamPlatform, on_delete=models.CASCADE, related_name='watchlist',default=1) # ForeignKey is used to create a many-to-one relationship, here one stream platform can have multiple watchlist items
     
     title=models.CharField(max_length=100)
     storyline=models.CharField(max_length=300)
