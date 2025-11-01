@@ -87,6 +87,18 @@ class StreamPlatformVS(viewsets.ViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     
+    def update(self, request, pk=None):
+        platform = get_object_or_404(StreamPlatform, pk=pk)
+        serializer = StreamPlatformSerializer(platform, data=request.data,partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()  # updates the existing object
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    
+    
     def destroy(self, request, pk=None):
         platform=StreamPlatform.objects.get(pk=pk)
         platform.delete()
