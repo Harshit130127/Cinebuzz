@@ -70,13 +70,27 @@ class StreamPlatformVS(viewsets.ViewSet):
         serializer=StreamPlatformSerializer(queryset, many=True,context={'request':self.request})
         return Response(serializer.data)
     
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, pk=None):  # the function name is predefined in viewsets
         queryset=StreamPlatform.objects.all()
         platform=get_object_or_404(queryset, pk=pk)
         serializer=StreamPlatformSerializer(platform, context={'request':request})
         return Response(serializer.data)
     
     
+    def create(self, request):
+        serializer=StreamPlatformSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    
+    def destroy(self, request, pk=None):
+        platform=StreamPlatform.objects.get(pk=pk)
+        platform.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
     
     
