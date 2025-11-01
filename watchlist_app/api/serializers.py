@@ -2,11 +2,12 @@ from rest_framework import serializers
 from watchlist_app.models import WatchList,StreamPlatform,Review
 
 class ReviewSerializer(serializers.ModelSerializer):
-    watchlist = serializers.CharField(source='watchlist.title', read_only=True)  # to show the title of the watchlist item instead of its id
+    # watchlist = serializers.CharField(source='watchlist.title', read_only=True)  # to show the title of the watchlist item instead of its id
 
     class Meta:
         model = Review
-        fields = "__all__"
+        # fields = "__all__"
+        exclude=('watchlist',) # we are excluding watchlist field here because we are showing it using nested serialization in WatchListSerializer
         
         
 

@@ -113,10 +113,27 @@ class StreamPlatformDetailAV(APIView):
     
 """Concrete Review views using generics"""
 
-class ReviewList(generics.ListCreateAPIView):
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer   # it gives the form-like structure of data
+class ReviewCreate(generics.CreateAPIView):
+    
+    serializer_class = ReviewSerializer
+    
+    def perform_create(self, serializer):  # it is predefined method in CreateAPIView to customize save behavior
+        pk=self.kwargs.get('pk')
+        watchlist=WatchList.objects.get(pk=pk)
+        serializer.save(watchlist=watchlist)
 
+
+class ReviewList(generics.ListAPIView):
+    # queryset = Review.objects.all()  # by default it will fetch all the reviews irrespective of watchlist item
+    serializer_class = ReviewSerializer   # it gives the form-like structure of data
+    
+    
+    def get_queryset(self):
+        pk=self.kwargs['pk']  # fetching pk from url
+        Review_list=Review.objects.filter(watchlist=pk)  # filtering reviews based on watchlist item
+        return Review_list
+    
+    
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
