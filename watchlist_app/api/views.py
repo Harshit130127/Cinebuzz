@@ -5,6 +5,9 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework import generics
 from rest_framework import mixins
+from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
+
 
 
 """For WatchList views"""
@@ -57,55 +60,21 @@ class WatchListDetailAV(APIView):
     
     
     
-"""FOr StreamPlatform views"""
-class StreamPlatformAV(APIView):
-    
-    def get(self, request):
-        stream=StreamPlatform.objects.all()
-        
-        serializer=StreamPlatformSerializer(stream, many=True,context={'request':request})
-        
-        return Response(serializer.data)
-    
-    
-    def post(self, request):
-        serializer=StreamPlatformSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+"""For StreamPlatform views using viewsets"""
 
-class StreamPlatformDetailAV(APIView):
-        
-    def get(self, request, pk):
-        try:
-            stream=StreamPlatform.objects.get(pk=pk)
-        except StreamPlatform.DoesNotExist:
-            return Response({'error':'not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-        serializer=StreamPlatformSerializer(stream)
-        
+class StreamPlatformVS(viewsets.ViewSet):
+    
+    def list(self,request):
+        # queryset=StreamPlatform.objects.all() # here there is an error because the name of the class is same as model name
+        queryset=StreamPlatform.objects.all()
+        serializer=StreamPlatformSerializer(queryset, many=True,context={'request':self.request})
         return Response(serializer.data)
     
-    
-    def put(self, request, pk):
-        stream=StreamPlatform.objects.get(pk=pk)
-        serializer=StreamPlatformSerializer(stream, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
-            
-    def delete(self, request, pk):
-        stream=StreamPlatform.objects.get(pk=pk)
-        stream.delete()
-        
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def retrieve(self, request, pk=None):
+        queryset=StreamPlatform.objects.all()
+        platform=get_object_or_404(queryset, pk=pk)
+        serializer=StreamPlatformSerializer(platform, context={'request':request})
+        return Response(serializer.data)
     
     
     
@@ -116,7 +85,7 @@ class StreamPlatformDetailAV(APIView):
 class ReviewCreate(generics.CreateAPIView):
     
     serializer_class = ReviewSerializer
-    
+    """overwrite query set here because we are not fetching all reviews but creating review for a particular watchlist item"""
     def perform_create(self, serializer):  # it is predefined method in CreateAPIView to customize save behavior
         pk=self.kwargs.get('pk')
         watchlist=WatchList.objects.get(pk=pk)
@@ -137,6 +106,63 @@ class ReviewList(generics.ListAPIView):
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    
+    
+    
+"""FOr StreamPlatform views using APIView"""
+# class StreamPlatformAV(APIView):
+    
+#     def get(self, request):
+#         stream=StreamPlatform.objects.all()
+        
+#         serializer=StreamPlatformSerializer(stream, many=True,context={'request':request})
+        
+#         return Response(serializer.data)
+    
+    
+#     def post(self, request):
+#         serializer=StreamPlatformSerializer(data=request.data)
+        
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
+# class StreamPlatformDetailAV(APIView):
+        
+#     def get(self, request, pk):
+#         try:
+#             stream=StreamPlatform.objects.get(pk=pk)
+#         except StreamPlatform.DoesNotExist:
+#             return Response({'error':'not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+#         serializer=StreamPlatformSerializer(stream)
+        
+#         return Response(serializer.data)
+    
+    
+#     def put(self, request, pk):
+#         stream=StreamPlatform.objects.get(pk=pk)
+#         serializer=StreamPlatformSerializer(stream, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+        
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+            
+#     def delete(self, request, pk):
+#         stream=StreamPlatform.objects.get(pk=pk)
+#         stream.delete()
+        
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    
+    
+    
+
 
 
 """For Review views using mixins and generics"""
