@@ -1,6 +1,9 @@
 from django.db import models
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
+
+
+
 
 class StreamPlatform(models.Model): # it specifies the streaming platform like netflix,amazon prime etc
     name=models.CharField(max_length=30)
@@ -25,3 +28,16 @@ class WatchList(models.Model):  # models.Model is used to create a model in djan
     
     def __str__(self): # the reason of using it because without it, django will show object1,object2 instead of movie names in admin panel
         return self.title
+    
+    
+    
+class Review(models.Model):
+    rating=models.PositiveIntegerField(validators=[MinValueValidator(1),MaxValueValidator(10)]) # validators can be used to set min and max value for rating
+    description=models.CharField(max_length=200,null=True)
+    watchlist=models.ForeignKey(WatchList, on_delete=models.CASCADE, related_name='reviews') # one watchlist item can have multiple reviews
+    active=models.BooleanField(default=True)
+    created=models.DateTimeField(auto_now_add=True)
+    update=models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Rating: {self.rating} for {self.watchlist.title}"
