@@ -7,7 +7,7 @@ from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
-
+from rest_framework import serializers
 
 
 """For WatchList views"""
@@ -114,11 +114,25 @@ class StreamPlatformVS(viewsets.ViewSet):
 class ReviewCreate(generics.CreateAPIView):
     
     serializer_class = ReviewSerializer
+    
+    
+    def get_queryset(self):
+        return Review.objects.all()
+    
+    
     """overwrite query set here because we are not fetching all reviews but creating review for a particular watchlist item"""
     def perform_create(self, serializer):  # it is predefined method in CreateAPIView to customize save behavior
         pk=self.kwargs.get('pk')
         watchlist=WatchList.objects.get(pk=pk)
-        serializer.save(watchlist=watchlist)
+        
+        user_review=self.request.user  # fetching the user who is making the review
+        review_queryset=Review.objects.filter(watchlist=watchlist, user_review=user_review) # checking if the user has already reviewed this watchlist item
+        
+        
+        if review_queryset.exists():
+            raise serializers.ValidationError("You have already reviewed this watchlist item!")
+        
+        serializer.save(watchlist=watchlist, user_review=user_review) # saving the watchlist item to which review is being made
 
 
 class ReviewList(generics.ListAPIView):

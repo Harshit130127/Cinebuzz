@@ -10,8 +10,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         # fields = "__all__"
         exclude=('watchlist',) # we are excluding watchlist field here because we are showing it using nested serialization in WatchListSerializer
-        
-        
+
 
 class WatchListSerializer(serializers.ModelSerializer):
     reviews=ReviewSerializer(many=True, read_only=True)  # nested serialization to show reviews related to watchlist item
