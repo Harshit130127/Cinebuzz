@@ -14,7 +14,7 @@ urlpatterns = [
     # path('stream/',views.StreamPlatformAV.as_view(),name='stream-platform-list'),
     # path('stream/<int:pk>/',views.StreamPlatformDetailAV.as_view(),name='stream-platform-detail'),
     
-    
+
 path('stream/<int:pk>/review_create/', views.ReviewCreate.as_view(), name='review-create'),
     path('stream/<int:pk>/review/',views.ReviewList.as_view(),name='review-list'), # it is to get all reviews for a particular movie
     path('stream/review/<int:pk>',views.ReviewDetail.as_view(),name='review-detail'),  # it is to get, update, delete a particular review

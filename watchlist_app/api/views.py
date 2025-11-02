@@ -8,6 +8,8 @@ from rest_framework import mixins
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
+from rest_framework.permissions import IsAuthenticated
+from watchlist_app.api.permissions import AdminOrReadOnly,ReviewUserOrReadOnly
 
 
 """For WatchList views"""
@@ -139,6 +141,7 @@ class ReviewList(generics.ListAPIView):
     # queryset = Review.objects.all()  # by default it will fetch all the reviews irrespective of watchlist item
     serializer_class = ReviewSerializer   # it gives the form-like structure of data
     
+    permission_classes=[IsAuthenticated]  # only authenticated users can view the reviews
     
     def get_queryset(self):
         pk=self.kwargs['pk']  # fetching pk from url
@@ -147,6 +150,7 @@ class ReviewList(generics.ListAPIView):
     
     
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes=[ReviewUserOrReadOnly]  # custom permission class to allow only admin to edit or delete reviews
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     
