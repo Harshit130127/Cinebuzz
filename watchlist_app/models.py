@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
-
+from django.contrib.auth.models import User
 
 
 
@@ -32,6 +32,8 @@ class WatchList(models.Model):  # models.Model is used to create a model in djan
     
     
 class Review(models.Model):
+    
+    # user_review=models.ForeignKey(User, on_delete=models.CASCADE)  # one user can give multiple reviews
     rating=models.PositiveIntegerField(validators=[MinValueValidator(1),MaxValueValidator(10)]) # validators can be used to set min and max value for rating
     description=models.CharField(max_length=200,null=True)
     watchlist=models.ForeignKey(WatchList, on_delete=models.CASCADE, related_name='reviews') # one watchlist item can have multiple reviews

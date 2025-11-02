@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404
 
 
 """For WatchList views"""
+
 class WatchListAV(APIView):
     serializer_class =  WatchListSerializer # it gives the form-like structure of data
     def get(self, request):
@@ -27,8 +28,9 @@ class WatchListAV(APIView):
         
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-        
-        
+
+
+
 class WatchListDetailAV(APIView):
     
     def get(self, request, pk):
@@ -58,8 +60,9 @@ class WatchListDetailAV(APIView):
         movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-    
-    
+
+
+
 """For StreamPlatform views using viewsets"""
 
 class StreamPlatformVS(viewsets.ViewSet):
@@ -103,9 +106,9 @@ class StreamPlatformVS(viewsets.ViewSet):
         platform=StreamPlatform.objects.get(pk=pk)
         platform.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-    
-    
+
+
+
 """Concrete Review views using generics"""
 
 class ReviewCreate(generics.CreateAPIView):
@@ -133,8 +136,14 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     
-    
-    
+
+
+
+
+
+
+
+
 """FOr StreamPlatform views using APIView"""
 # class StreamPlatformAV(APIView):
     

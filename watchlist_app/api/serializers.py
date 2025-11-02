@@ -3,7 +3,9 @@ from watchlist_app.models import WatchList,StreamPlatform,Review
 
 class ReviewSerializer(serializers.ModelSerializer):
     # watchlist = serializers.CharField(source='watchlist.title', read_only=True)  # to show the title of the watchlist item instead of its id
-
+    
+    user_review = serializers.StringRelatedField(read_only=True)  # to show the username of the user who gave the review
+    
     class Meta:
         model = Review
         # fields = "__all__"
