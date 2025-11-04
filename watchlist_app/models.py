@@ -24,6 +24,8 @@ class WatchList(models.Model):  # models.Model is used to create a model in djan
     title=models.CharField(max_length=100)
     storyline=models.CharField(max_length=300)
     active=models.BooleanField(default=True)
+    avg_rating=models.FloatField(default=0)  # average rating of the movie
+    number_of_ratings=models.IntegerField(default=0)
     created=models.DateTimeField(auto_now_add=True)
     
     def __str__(self): # the reason of using it because without it, django will show object1,object2 instead of movie names in admin panel
