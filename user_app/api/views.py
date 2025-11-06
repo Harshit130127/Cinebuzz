@@ -5,6 +5,18 @@ from .serializers import RegistrationSerializer
 from rest_framework.authtoken.models import Token
 from user_app import models
 
+
+
+@api_view(['GET'])
+def logout_view(request):
+    if request.method == 'GET':
+        request.user.auth_token.delete()  # delete the token to logout
+        return Response({'message': 'Successfully logged out.'}, status=status.HTTP_200_OK)
+
+
+
+
+
 @api_view(['POST'])
 def registeration_view(request):
     

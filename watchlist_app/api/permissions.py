@@ -1,7 +1,7 @@
 from rest_framework import permissions
 
 
-class AdminOrReadOnly(permissions.IsAdminUser):  # this base permission class helps to create custom permissions
+class IsAdminOrReadOnly(permissions.IsAdminUser):  # this base permission class helps to create custom permissions
     
     def has_permission(self, request, view): # has_permission method checks if the user has permission to access the view
         
@@ -11,7 +11,7 @@ class AdminOrReadOnly(permissions.IsAdminUser):  # this base permission class he
         return bool(request.user and request.user.is_staff)
     
     
-class ReviewUserOrReadOnly(permissions.BasePermission):
+class IsReviewUserOrReadOnly(permissions.BasePermission):
     
     
     def has_object_permission(self, request, view, obj):

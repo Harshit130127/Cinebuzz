@@ -9,12 +9,15 @@ from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.permissions import IsAuthenticated
-from watchlist_app.api.permissions import AdminOrReadOnly,ReviewUserOrReadOnly
+from watchlist_app.api.permissions import IsAdminOrReadOnly,IsReviewUserOrReadOnly
 
 
 """For WatchList views"""
 
 class WatchListAV(APIView):
+    
+    permission_classes=[IsAdminOrReadOnly]  # only admin can edit or delete watchlist items
+    
     serializer_class =  WatchListSerializer # it gives the form-like structure of data
     def get(self, request):
         movies = WatchList.objects.all()
@@ -34,6 +37,7 @@ class WatchListAV(APIView):
 
 
 class WatchListDetailAV(APIView):
+    permission_classes=[IsAdminOrReadOnly]  # only admin can edit or delete watchlist items
     
     def get(self, request, pk):
         try:
@@ -68,6 +72,8 @@ class WatchListDetailAV(APIView):
 """For StreamPlatform views using viewsets"""
 
 class StreamPlatformVS(viewsets.ViewSet):
+    
+    permission_classes=[IsAdminOrReadOnly]  # only admin can edit or delete stream platform items
     
     def list(self,request):
         # queryset=StreamPlatform.objects.all() # here there is an error because the name of the class is same as model name
@@ -117,6 +123,8 @@ class ReviewCreate(generics.CreateAPIView):
     
     serializer_class = ReviewSerializer
     
+    permission_classes=[IsAuthenticated]  # only authenticated users can create reviews
+    
     
     def get_queryset(self):
         return Review.objects.all()
@@ -151,7 +159,7 @@ class ReviewList(generics.ListAPIView):
     # queryset = Review.objects.all()  # by default it will fetch all the reviews irrespective of watchlist item
     serializer_class = ReviewSerializer   # it gives the form-like structure of data
     
-    permission_classes=[IsAuthenticated]  # only authenticated users can view the reviews
+    # permission_classes=[IsAuthenticated]  # only authenticated users can view the reviews
     
     def get_queryset(self):
         pk=self.kwargs['pk']  # fetching pk from url
@@ -160,7 +168,7 @@ class ReviewList(generics.ListAPIView):
     
     
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes=[ReviewUserOrReadOnly]  # custom permission class to allow only admin to edit or delete reviews
+    permission_classes=[IsReviewUserOrReadOnly]  # custom permission class to allow only admin to edit or delete reviews
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     
