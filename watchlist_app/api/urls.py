@@ -14,6 +14,7 @@ urlpatterns = [
     # path('stream/',views.StreamPlatformAV.as_view(),name='stream-platform-list'),
     # path('stream/<int:pk>/',views.StreamPlatformDetailAV.as_view(),name='stream-platform-detail'),
     
+    
 
 path('<int:pk>/review_create/', views.ReviewCreate.as_view(), name='review-create'),
     path('<int:pk>/reviews/',views.ReviewList.as_view(),name='review-list'), # it is to get all reviews for a particular movie
