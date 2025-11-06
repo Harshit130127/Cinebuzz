@@ -12,11 +12,21 @@ class RegistrationSerializer(serializers.ModelSerializer):
         }
         
         
-    # def create(self, validated_data):
-    #     user = User(
-    #         username=validated_data['username'],
-    #         email=validated_data['email']
-    #     )
-    #     user.set_password(validated_data['password'])
-    #     user.save()
-    #     return user
+    def save(self):  # override save method to add custom validation
+        
+        password = self.validated_data['password']    
+        password2 = self.validated_data['password2']
+        
+        if password != password2:
+            raise serializers.ValidationError({'password error': 'Passwords must match.'})
+        
+        
+        if User.objects.filter(email=self.validated_data['email']).exists():  # this checks if email already exists using django orm and exists() method
+            raise serializers.ValidationError({'email error': 'Email already exists.'})
+        
+        account = User(email=self.validated_data['email'],username=self.validated_data['username'])  # create user instance
+        account.set_password(password)  # to hash the password
+        
+        account.save()
+        
+        return account
