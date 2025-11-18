@@ -141,13 +141,17 @@ REST_FRAMEWORK = {
     ] ,
     
     
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
-    ],
+    # 'DEFAULT_THROTTLE_CLASSES': [
+    #     'rest_framework.throttling.AnonRateThrottle',
+    #     'rest_framework.throttling.UserRateThrottle'
+    # ],
+    
     'DEFAULT_THROTTLE_RATES': {
         'anon': '3/day',
-        'user': '10/day'
+        'user': '10/day',
+        'review-create': '2/day',
+        'review-list': '6/day',
+        'review-detail': '4/day',
     }
     
 }

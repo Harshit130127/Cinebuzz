@@ -10,6 +10,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.permissions import IsAuthenticated
 from watchlist_app.api.permissions import IsAdminOrReadOnly,IsReviewUserOrReadOnly
+from rest_framework.throttling import UserRateThrottle,AnonRateThrottle,ScopedRateThrottle
+from watchlist_app.api.throttling import ReviewCreateThrottle, ReviewListThrottle
 
 
 """For WatchList views"""
@@ -122,7 +124,7 @@ class StreamPlatformVS(viewsets.ViewSet):
 class ReviewCreate(generics.CreateAPIView):
     
     serializer_class = ReviewSerializer
-    
+    throttle_classes = [ReviewCreateThrottle] # applying custom throttling to limit request rates
     permission_classes=[IsAuthenticated]  # only authenticated users can create reviews
     
     
@@ -161,6 +163,10 @@ class ReviewList(generics.ListAPIView):
     
     # permission_classes=[IsAuthenticated]  # only authenticated users can view the reviews
     
+    
+    throttle_classes = [ReviewListThrottle,AnonRateThrottle] # applying custom throttling to limit request rates
+    
+        
     def get_queryset(self):
         pk=self.kwargs['pk']  # fetching pk from url
         Review_list=Review.objects.filter(watchlist=pk)  # filtering reviews based on watchlist item
@@ -172,6 +178,20 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     
+    # throttle_classes = [UserRateThrottle, AnonRateThrottle] # applying local throttling to limit request rates
+    
+    
+    throttle_classes = [ScopedRateThrottle] # applying custom throttling to limit request rates
+    throttle_scope='review-detail'  # referring to the rate limit defined in settings.py
+
+
+
+
+
+
+
+
+
 
 
 
