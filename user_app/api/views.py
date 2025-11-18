@@ -4,7 +4,7 @@ from rest_framework import status
 from .serializers import RegistrationSerializer
 from rest_framework.authtoken.models import Token
 from user_app import models
-
+# from rest_framework_simplejwt.tokens import RefreshToken
 
 
 @api_view(['GET'])
@@ -35,6 +35,13 @@ def registeration_view(request):
             
             token=Token.objects.get(user=account).key  # get the token created using signals in models.py,it helps to login directly after registration
             data['token']=token
+            
+            # refresh=RefreshToken.for_user(account)
+            # data['token']={
+            #     'refresh': str(refresh),
+            #     'access': str(refresh.access_token),
+            # }
+            
             
             return Response(data, status=status.HTTP_201_CREATED)
 
