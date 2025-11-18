@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "watchlist_app",
     "rest_framework",
     'rest_framework.authtoken',
-    'django_filter', # only applicable on generic views with filtering
+    'django_filters', # only applicable on generic views with filtering
 ]
 
 MIDDLEWARE = [
@@ -148,13 +148,15 @@ REST_FRAMEWORK = {
     # ],
     
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '3/day',
-        'user': '10/day',
-        'review-create': '2/day',
-        'review-list': '6/day',
-        'review-detail': '4/day',
-    }
+        'anon': '50/day',
+        'user': '100/day',
+        'review-create': '50/day',
+        'review-list': '50/day',
+        'review-detail': '60/day',
+    },
     
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+
 }
 
 

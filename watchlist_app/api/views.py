@@ -12,6 +12,9 @@ from rest_framework.permissions import IsAuthenticated
 from watchlist_app.api.permissions import IsAdminOrReadOnly,IsReviewUserOrReadOnly
 from rest_framework.throttling import UserRateThrottle,AnonRateThrottle,ScopedRateThrottle
 from watchlist_app.api.throttling import ReviewCreateThrottle, ReviewListThrottle
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+
 
 
 """For WatchList views"""
@@ -165,7 +168,9 @@ class ReviewList(generics.ListAPIView):
     
     
     throttle_classes = [ReviewListThrottle,AnonRateThrottle] # applying custom throttling to limit request rates
-    
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user_review__username','active']  # filtering based on username and active status
+        
         
     def get_queryset(self):
         pk=self.kwargs['pk']  # fetching pk from url
