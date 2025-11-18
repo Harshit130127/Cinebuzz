@@ -13,10 +13,14 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class WatchListSerializer(serializers.ModelSerializer):
-    reviews=ReviewSerializer(many=True, read_only=True)  # nested serialization to show reviews related to watchlist item
+    # reviews=ReviewSerializer(many=True, read_only=True)  # nested serialization to show reviews related to watchlist item
+    Platform=serializers.CharField(source='Platform.name')  # to show the name of the platform instead of its id
     class Meta:
         model = WatchList
         fields = "__all__"
+
+
+
 
 class StreamPlatformSerializer(serializers.ModelSerializer):
     

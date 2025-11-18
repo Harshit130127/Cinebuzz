@@ -19,6 +19,24 @@ from rest_framework import filters
 
 """For WatchList views"""
 
+
+class WatchListGV(generics.ListCreateAPIView):
+    queryset = WatchList.objects.all()
+    serializer_class =  WatchListSerializer # it gives the form-like structure of data
+    
+    
+    #filter_backends = [DjangoFilterBackend]
+    #fileterset_fields = ['platform__name']  # filtering based on platform name
+    
+    #filer_backends = [filters.SearchFilter]
+    #search_fields = ['title', 'platform__name']  # searching based on title and platform name
+    
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['avg_rating']  # ordering based on average rating
+
+
+
+
 class WatchListAV(APIView):
     
     permission_classes=[IsAdminOrReadOnly]  # only admin can edit or delete watchlist items
