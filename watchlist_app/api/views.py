@@ -159,7 +159,7 @@ class ReviewList(generics.ListAPIView):
     # queryset = Review.objects.all()  # by default it will fetch all the reviews irrespective of watchlist item
     serializer_class = ReviewSerializer   # it gives the form-like structure of data
     
-    permission_classes=[IsAuthenticated]  # only authenticated users can view the reviews
+    # permission_classes=[IsAuthenticated]  # only authenticated users can view the reviews
     
     def get_queryset(self):
         pk=self.kwargs['pk']  # fetching pk from url

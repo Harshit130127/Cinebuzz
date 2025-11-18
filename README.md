@@ -63,8 +63,21 @@ Recently completed the full JWT section of the course.
 
 ---
 
-## ⏭️ Next Topics (Upcoming Modules)
-- Throttling (Anon/User/Scoped)  
+## Throttling (Rate Limiting)
+
+Added DRF throttling to control request frequency and prevent abuse.
+
+- Enabled global throttling  
+  - `AnonRateThrottle` (e.g., 3/day for anonymous users)  
+  - `UserRateThrottle` (e.g., 10/day for authenticated users)
+
+- Added scoped throttling for specific endpoints  
+  - Example: reviews API using `ScopedRateThrottle`
+
+- Implemented basic custom throttle classes for fine-grained per-view limits
+
+
+##  Next Topics (Upcoming Modules)
 - Filtering, search & ordering  
 - Pagination methods  
 - API test cases  
@@ -72,7 +85,7 @@ Recently completed the full JWT section of the course.
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 - Python  
 - Django  
 - Django REST Framework  
