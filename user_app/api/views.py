@@ -33,7 +33,7 @@ def registeration_view(request):
             data['username']=account.username
             data['email']=account.email
             
-            token=Token.objects.get(user=account).key  # get the token created using signals in models.py
+            token=Token.objects.get(user=account).key  # get the token created using signals in models.py,it helps to login directly after registration
             data['token']=token
             
             return Response(data, status=status.HTTP_201_CREATED)
