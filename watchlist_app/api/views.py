@@ -14,7 +14,7 @@ from rest_framework.throttling import UserRateThrottle,AnonRateThrottle,ScopedRa
 from watchlist_app.api.throttling import ReviewCreateThrottle, ReviewListThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
-from watchlist_app.api.pagination import WatchListPagination
+from watchlist_app.api.pagination import WatchListPagination, WatchListLOPagination
 
 
 
@@ -27,7 +27,7 @@ class WatchListGV(generics.ListCreateAPIView):
     queryset = WatchList.objects.all()
     serializer_class =  WatchListSerializer # it gives the form-like structure of data
     
-    pagination_class = WatchListPagination  # custom pagination class
+    pagination_class = WatchListLOPagination  # custom pagination class
     
     #filter_backends = [DjangoFilterBackend]
     #fileterset_fields = ['platform__name']  # filtering based on platform name
