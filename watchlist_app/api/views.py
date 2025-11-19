@@ -19,7 +19,7 @@ from rest_framework import filters
 
 """For WatchList views"""
 
-
+"""for testing purposes"""
 class WatchListGV(generics.ListCreateAPIView):
     queryset = WatchList.objects.all()
     serializer_class =  WatchListSerializer # it gives the form-like structure of data
@@ -34,7 +34,7 @@ class WatchListGV(generics.ListCreateAPIView):
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['avg_rating']  # ordering based on average rating
 
-
+"""end of testing purposes"""
 
 
 class WatchListAV(APIView):
