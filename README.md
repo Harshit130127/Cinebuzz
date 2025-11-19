@@ -77,11 +77,28 @@ Added DRF throttling to control request frequency and prevent abuse.
 - Implemented basic custom throttle classes for fine-grained per-view limits
 
 
+## Filtering, Search & Ordering
+
+- Added filtering using `DjangoFilterBackend`
+- Added search support using `SearchFilter`
+- Added ordering using `OrderingFilter`
+- Configured `filterset_fields`, `search_fields`, and `ordering_fields`
+- Implemented a custom `FilterSet` for advanced filters
+
+
+## Pagination Methods
+
+- Implemented PageNumber, LimitOffset, and Cursor pagination
+- Added custom pagination class with adjustable page size
+- Configured global pagination settings in DRF
+- Tested pagination responses in Browsable API and Postman
+- Learned how to switch Browsable API to JSON-only output
+
+
 ##  Next Topics (Upcoming Modules)
-- Filtering, search & ordering  
-- Pagination methods  
 - API test cases  
 - Deployment  
+
 
 ---
 
