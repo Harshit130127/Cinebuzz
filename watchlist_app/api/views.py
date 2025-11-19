@@ -14,7 +14,7 @@ from rest_framework.throttling import UserRateThrottle,AnonRateThrottle,ScopedRa
 from watchlist_app.api.throttling import ReviewCreateThrottle, ReviewListThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
-from watchlist_app.api.pagination import WatchListPagination, WatchListLOPagination
+from watchlist_app.api.pagination import WatchListPagination, WatchListLOPagination, WatchListCPagination
 
 
 
@@ -27,7 +27,7 @@ class WatchListGV(generics.ListCreateAPIView):
     queryset = WatchList.objects.all()
     serializer_class =  WatchListSerializer # it gives the form-like structure of data
     
-    pagination_class = WatchListLOPagination  # custom pagination class
+    pagination_class = WatchListCPagination  # custom pagination class
     
     #filter_backends = [DjangoFilterBackend]
     #fileterset_fields = ['platform__name']  # filtering based on platform name
@@ -35,8 +35,8 @@ class WatchListGV(generics.ListCreateAPIView):
     #filer_backends = [filters.SearchFilter]
     #search_fields = ['title', 'platform__name']  # searching based on title and platform name
     
-    filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['avg_rating']  # ordering based on average rating
+    # filter_backends = [filters.OrderingFilter]
+    # ordering_fields = ['avg_rating']  # ordering based on average rating
 
 """end of testing purposes"""
 

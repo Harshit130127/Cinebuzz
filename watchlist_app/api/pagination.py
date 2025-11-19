@@ -1,4 +1,4 @@
-from rest_framework.pagination import PageNumberPagination,LimitOffsetPagination
+from rest_framework.pagination import PageNumberPagination,LimitOffsetPagination,CursorPagination
 
 class WatchListPagination(PageNumberPagination):
     
@@ -16,3 +16,11 @@ class WatchListLOPagination(LimitOffsetPagination):
     max_limit=10
     limit_query_param='limit'  # to allow user to set the limit dynamically
     offset_query_param='offset'  # to allow user to set the offset dynamically
+    
+    
+    
+class WatchListCPagination(CursorPagination):
+    
+    page_size=5
+    ordering='created'  # based on which field the pagination will be done
+    cursor_query_param='record'  # this is not for end user use, it's for internal use to keep track of the cursor position or the name of the query parameter for the cursor
