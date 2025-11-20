@@ -88,22 +88,23 @@ class WatchListTestCase(APITestCase):
 class ReviewTestCase(APITestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(username="example", password="Password@123")
-        self.token = Token.objects.get(user__username=self.user)
+        self.user=User.objects.create_user(username='testuser', password='testpassword')
+        self.token, _ = Token.objects.get_or_create(user=self.user)
+        self.client=APIClient()
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
 
         self.stream = models.StreamPlatform.objects.create(name="Netflix", 
                                 about="Streaming Platform", website="https://www.netflix.com")
-        self.watchlist = models.WatchList.objects.create(platform=self.stream, title="Example Movie",
+        self.watchlist = models.WatchList.objects.create(Platform=self.stream, title="Example Movie",
                                 storyline="Example Movie", active=True)
-        self.watchlist2 = models.WatchList.objects.create(platform=self.stream, title="Example Movie",
+        self.watchlist2 = models.WatchList.objects.create(Platform=self.stream, title="Example Movie",
                                 storyline="Example Movie", active=True)
-        self.review = models.Review.objects.create(review_user=self.user, rating=8, description="fantastic movie", 
+        self.review = models.Review.objects.create(user_review=self.user, rating=8, description="fantastic movie", 
                                 watchlist=self.watchlist2, active=True)
     
     def test_review_create(self):
         data = {
-            "review_user": self.user,
+            "user_review": self.user,
             "rating": 8,
             "description": "fantastic movie",
             "watchlist": self.watchlist,
@@ -119,7 +120,7 @@ class ReviewTestCase(APITestCase):
 
     def test_review_create_unauth(self):
         data = {
-            "review_user": self.user,
+            "user_review": self.user,
             "rating": 8,
             "description": "fantastic movie",
             "watchlist": self.watchlist,
@@ -132,7 +133,7 @@ class ReviewTestCase(APITestCase):
 
     def test_review_update(self):
         data = {
-            "review_user": self.user,
+            "user_review": self.user,
             "rating": 4,
             "description": "Great Movie! - Updated",
             "watchlist": self.watchlist,
@@ -154,7 +155,8 @@ class ReviewTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_review_user(self):
-        response = self.client.get('/api/watch/user-reviews/?username=' + self.user.username)
+        url = reverse('user-review-detail')   
+        response = self.client.get(url + '?username=' + self.user.username)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
         

@@ -17,8 +17,13 @@ from rest_framework import filters
 from watchlist_app.api.pagination import WatchListPagination, WatchListLOPagination, WatchListCPagination
 
 
+""" For User Review based view"""
+class UserReview(generics.ListAPIView):
+    serializer_class = ReviewSerializer
 
-
+    def get_queryset(self):
+        username = self.request.query_params.get('username', None)
+        return Review.objects.filter(user_review__username=username)
 
 """For WatchList views"""
 
