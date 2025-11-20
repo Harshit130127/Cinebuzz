@@ -1,8 +1,7 @@
-from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
 from django.contrib.auth.models import User
-
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 
 
 class StreamPlatform(models.Model): # it specifies the streaming platform like netflix,amazon prime etc

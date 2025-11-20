@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from watchlist_app.models import WatchList,StreamPlatform,Review
+from watchlist_app.models import Review, StreamPlatform, WatchList
+
 
 class ReviewSerializer(serializers.ModelSerializer):
     # watchlist = serializers.CharField(source='watchlist.title', read_only=True)  # to show the title of the watchlist item instead of its id

@@ -1,20 +1,29 @@
-from watchlist_app.models import WatchList,StreamPlatform,Review
-from watchlist_app.api.serializers import WatchListSerializer,StreamPlatformSerializer,ReviewSerializer
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework import status
-from rest_framework import generics
-from rest_framework import mixins
-from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
-from rest_framework import serializers
-from rest_framework.permissions import IsAuthenticated
-from watchlist_app.api.permissions import IsAdminOrReadOnly,IsReviewUserOrReadOnly
-from rest_framework.throttling import UserRateThrottle,AnonRateThrottle,ScopedRateThrottle
-from watchlist_app.api.throttling import ReviewCreateThrottle, ReviewListThrottle
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
-from watchlist_app.api.pagination import WatchListPagination, WatchListLOPagination, WatchListCPagination
+
+from rest_framework import (filters, generics, mixins, serializers, status,
+                            viewsets)
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.throttling import (AnonRateThrottle, ScopedRateThrottle,
+                                       UserRateThrottle)
+from rest_framework.views import APIView
+
+from watchlist_app.api.pagination import (WatchListCPagination,
+                                          WatchListLOPagination,
+                                          WatchListPagination)
+
+from watchlist_app.api.permissions import (IsAdminOrReadOnly,
+                                           IsReviewUserOrReadOnly)
+
+from watchlist_app.api.serializers import (ReviewSerializer,
+                                           StreamPlatformSerializer,
+                                           WatchListSerializer)
+
+from watchlist_app.api.throttling import (ReviewCreateThrottle,
+                                          ReviewListThrottle)
+from watchlist_app.models import Review, StreamPlatform, WatchList
+
 
 
 """ For User Review based view"""
@@ -108,7 +117,6 @@ class StreamPlatformVS(viewsets.ViewSet):
     permission_classes=[IsAdminOrReadOnly]  # only admin can edit or delete stream platform items
     
     def list(self,request):
-        # queryset=StreamPlatform.objects.all() # here there is an error because the name of the class is same as model name
         queryset=StreamPlatform.objects.all()
         serializer=StreamPlatformSerializer(queryset, many=True,context={'request':self.request})
         return Response(serializer.data)
@@ -215,108 +223,3 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     
     throttle_classes = [ScopedRateThrottle] # applying custom throttling to limit request rates
     throttle_scope='review-detail'  # referring to the rate limit defined in settings.py
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""FOr StreamPlatform views using APIView"""
-# class StreamPlatformAV(APIView):
-    
-#     def get(self, request):
-#         stream=StreamPlatform.objects.all()
-        
-#         serializer=StreamPlatformSerializer(stream, many=True,context={'request':request})
-        
-#         return Response(serializer.data)
-    
-    
-#     def post(self, request):
-#         serializer=StreamPlatformSerializer(data=request.data)
-        
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-
-# class StreamPlatformDetailAV(APIView):
-        
-#     def get(self, request, pk):
-#         try:
-#             stream=StreamPlatform.objects.get(pk=pk)
-#         except StreamPlatform.DoesNotExist:
-#             return Response({'error':'not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-#         serializer=StreamPlatformSerializer(stream)
-        
-#         return Response(serializer.data)
-    
-    
-#     def put(self, request, pk):
-#         stream=StreamPlatform.objects.get(pk=pk)
-#         serializer=StreamPlatformSerializer(stream, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-        
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
-            
-#     def delete(self, request, pk):
-#         stream=StreamPlatform.objects.get(pk=pk)
-#         stream.delete()
-        
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-    
-    
-    
-
-
-
-"""For Review views using mixins and generics"""
-
-# class ReviewList(mixins.ListModelMixin,
-#                  mixins.CreateModelMixin,
-#                  generics.GenericAPIView):
-#     queryset = Review.objects.all()
-#     serializer_class = ReviewSerializer   # it gives the form-like structure of data
-    
-    
-    
-#     def get(self, request, *args, **kwargs):
-#         return self.list(request, *args, **kwargs)
-    
-#     def post(self, request, *args, **kwargs):
-#         return self.create(request, *args, **kwargs)
-    
-    
-# class ReviewDetail(mixins.RetrieveModelMixin,
-#                    mixins.UpdateModelMixin,
-#                    mixins.DestroyModelMixin,
-#                    generics.GenericAPIView):
-#     queryset = Review.objects.all()
-#     serializer_class = ReviewSerializer
-    
-#     def get(self, request, *args, **kwargs):
-#         return self.retrieve(request, *args, **kwargs)
-    
-#     def put(self, request, *args, **kwargs):
-#         return self.update(request, *args, **kwargs)
-    
-#     def delete(self, request, *args, **kwargs):
-#         return self.destroy(request, *args, **kwargs)

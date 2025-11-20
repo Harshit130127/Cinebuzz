@@ -1,117 +1,61 @@
-# CineBuzz- Django REST API 
+# CineBuzz: Robust Django REST API 
 
-This project is part of my learning journey while following a Django REST Framework course.  
-I’m building a complete backend step-by-step, covering core DRF concepts, authentication systems, and API design.
+A comprehensive, production-ready backend project built with Django REST Framework (DRF), designed to demonstrate mastery of core API development principles, authentication, authorization, and advanced optimization techniques.
 
----
+##  Project Goal
 
-## Progress Covered So Far
-
-### ✔ Django + DRF Basics
-- Setting up Django project & apps  
-- Models and migrations  
-- Returning JSON responses  
-- Introduction to DRF  
-- Browsable API basics  
-
-### ✔ Serializers
-- Basic serializers  
-- Handling GET, POST, PUT, DELETE  
-- Validation  
-- Serializer fields & arguments  
-- ModelSerializer  
-- Custom serializer fields  
-- Updating models  
-
-### ✔ DRF Views
-- APIView  
-- GenericAPIView + Mixins  
-- Concrete view classes  
-- Viewsets  
-- Routers  
-- ModelViewSet  
-- URL structure and routing  
-
-### ✔ Relationships & Nested Data
-- Django model relationships  
-- Nested serializers  
-- Serializer relations  
-- Hyperlinked serializers  
-
-### ✔ Authentication (Before JWT)
-- Basic Authentication  
-- Session Authentication  
-- Token Authentication (DRF TokenAuth)  
-- Login, logout, registration flow  
+To master modern backend fundamentals using **Python/Django**, build clean, maintainable API structures, and prepare for professional backend engineering roles.
 
 ---
 
-##  Completed: JWT Authentication Module
+## Key Architectural Features
 
-Recently completed the full JWT section of the course.
+This project implements all critical components required for a secure and scalable REST API:
 
-### Features implemented:
-- Login & registration endpoints  
-- Access + Refresh token generation  
-- Token verification endpoint  
-- Blacklist support for secure logout  
-- Serializer validation for auth inputs  
-- Used both APIView and ViewSet patterns  
-- Protected endpoints using `IsAuthenticated`  
-- Tested all endpoints using Postman  
-- Handled invalid and expired tokens  
+### Security & Access Control
 
----
+* **JSON Web Token (JWT) Authentication:** Implemented full authentication flow using **Django SimpleJWT** for stateless security.
+    * **Features:** Login, Registration, **Access** & **Refresh** token generation, Token verification, and **Blacklist** support for secure logout.
+* **Permissions System:** Protected all endpoints using DRF's built-in permissions.
+    * `IsAuthenticated`: Ensures only logged-in users can access resources.
+    * **Custom Permissions:** Implemented granular object-level permissions (e.g., `IsReviewUserOrReadOnly`, `IsAdminOrReadOnly`).
 
-## Throttling (Rate Limiting)
+### Rate Limiting & Throttling
 
-Added DRF throttling to control request frequency and prevent abuse.
+Advanced control over request frequency to prevent abuse and ensure fair access.
+* **Global Limits:** Implemented `AnonRateThrottle` (anonymous users) and `UserRateThrottle` (authenticated users).
+* **Scoped Throttling:** Used `ScopedRateThrottle` to enforce unique, view-specific limits (e.g., 5 requests per minute on review creation).
+* **Custom Classes:** Developed custom throttling classes for fine-grained control.
 
-- Enabled global throttling  
-  - `AnonRateThrottle` (e.g., 3/day for anonymous users)  
-  - `UserRateThrottle` (e.g., 10/day for authenticated users)
+### Optimization & Data Handling
 
-- Added scoped throttling for specific endpoints  
-  - Example: reviews API using `ScopedRateThrottle`
-
-- Implemented basic custom throttle classes for fine-grained per-view limits
-
-
-## Filtering, Search & Ordering
-
-- Added filtering using `DjangoFilterBackend`
-- Added search support using `SearchFilter`
-- Added ordering using `OrderingFilter`
-- Configured `filterset_fields`, `search_fields`, and `ordering_fields`
-- Implemented a custom `FilterSet` for advanced filters
-
-
-## Pagination Methods
-
-- Implemented PageNumber, LimitOffset, and Cursor pagination
-- Added custom pagination class with adjustable page size
-- Configured global pagination settings in DRF
-- Tested pagination responses in Browsable API and Postman
-- Learned how to switch Browsable API to JSON-only output
-
-
-##  Next Topics (Upcoming Modules)
-- API test cases  
-- Deployment  
-
+* **Filtering & Searching:** Enabled advanced data discovery across endpoints.
+    * **Filtering:** Utilized `DjangoFilterBackend` with custom `FilterSet` classes.
+    * **Search:** Integrated `SearchFilter` (e.g., searching WatchLists by title/description).
+    * **Ordering:** Enabled dynamic result sorting using `OrderingFilter`.
+* **Pagination:** Implemented three distinct pagination methods for efficient data transfer and client-side handling:
+    * `PageNumberPagination`
+    * `LimitOffsetPagination`
+    * `CursorPagination` (for fast, consistent ordering).
+* **Data Relationships:** Handled complex **many-to-many** and **one-to-many** model relationships using nested and Hyperlinked serializers.
 
 ---
 
-##  Tech Stack
-- Python  
-- Django  
-- Django REST Framework  
-- SimpleJWT  
-- SQLite (development)  
-- Postman  
-- Git & GitHub  
+## Core DRF Implementation
+
+| Concept | Implementation Details |
+| :--- | :--- |
+| **Views** | Full coverage of **APIView**, **GenericAPIView + Mixins**, **Concrete View Classes**, **ViewSets**, and **ModelViewSets** using Routers. |
+| **Serializers** | Mastery of `ModelSerializer`, custom fields, advanced validation logic, and handling the full **GET/POST/PUT/DELETE** lifecycle. |
+| **Testing** | Comprehensive **API Test Suite** using DRF's `APITestCase`. Full coverage for authentication, permissions, CRUD operations, and edge-case behavior (e.g., duplicate review prevention). |
 
 ---
 
-##  Goal
-To fully understand backend fundamentals, build clean API structures, and prepare for backend roles using Python/Django in 2026.
+## Tech Stack
+
+| Category | Technologies |
+| :--- | :--- |
+| **Backend** | Python, Django, **Django REST Framework (DRF)** |
+| **Auth** | **SimpleJWT** |
+| **Database** | SQLite (Development) |
+| **Tools** | Postman, Git, GitHub |
